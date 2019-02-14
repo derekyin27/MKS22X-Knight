@@ -18,8 +18,8 @@ public String toString(){
       if (board[r][c] == 0){
         str+= "_ ";
       }
-        else if (board[r][c] >= 10){
-          str+=board[r][c];
+        else if (board[r][c] < 10){
+          str+=" " + board[r][c] + " ";
         }
       else{
         str+= board[r][c] + " ";
@@ -45,7 +45,7 @@ public boolean solve(int startingRow, int startingCol){
   }
 }
 
-private boolean solveH(int row, int col, int level){
+/*private boolean solveH(int row, int col, int level){
   if (level == board.length * board[0].length){
     return true;
   }
@@ -63,7 +63,30 @@ private boolean solveH(int row, int col, int level){
     solveH(row-2, col+1, level+1) ||
     solveH(row-2, col-1, level+1);
   }
-  return true;
+  return false;
+
+
+*/
+
+private boolean solveH(int row, int col, int level){
+  if (level == board.length * board[0].length * board.length){
+    return true;
+  }
+  if (row >= board.length || col >= board[0].length || row <0 || col<0){
+    return false;
+  }
+   if (board[row][col] == 0 ){
+    board[row][col] = level;
+    return solveH(row+1, col+2, level+1) ||
+    solveH(row+1, col-2, level+1) ||
+    solveH(row-1, col-2, level+1) ||
+    solveH(row-1, col+2, level+1) ||
+    solveH(row+2, col+1, level+1) ||
+    solveH(row+2, col-1, level+1) ||
+    solveH(row-2, col+1, level+1) ||
+    solveH(row-2, col-1, level+1);
+  }
+  else return solveH(row, col, level+1);
 
 }
 public static void main(String[] args) {
