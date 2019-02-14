@@ -17,7 +17,11 @@ public String toString(){
     for (int c=0; c < board[0].length; c++){
       if (board[r][c] == 0){
         str+= "_ ";
-      }else{
+      }
+        else if (board[r][c] >= 10){
+          str+=board[r][c];
+        }
+      else{
         str+= board[r][c] + " ";
       }
 
@@ -48,8 +52,7 @@ private boolean solveH(int row, int col, int level){
   if (row >= board.length || col >= board[0].length || row <0 || col<0){
     return false;
   }
-  else{
-    if (board[row][col] == 0){
+  else if (board[row][col] == 0){
     board[row][col] = level;
     return solveH(row+1, col+2, level+1) ||
     solveH(row+1, col-2, level+1) ||
@@ -61,10 +64,10 @@ private boolean solveH(int row, int col, int level){
     solveH(row-2, col-1, level+1);
   }
   return true;
-  }
+
 }
 public static void main(String[] args) {
-  KnightBoard test = new KnightBoard(7, 7);
+  KnightBoard test = new KnightBoard(10, 10);
   System.out.println(test.solve(0,0));
   System.out.println(test);
 }
