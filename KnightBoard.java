@@ -11,6 +11,8 @@ public class KnightBoard{
         board[r][c] = 0;
       }
     }
+    moves1 = new int[] {1, 1, -1, -1, 2, 2, -2, -2};
+    moves2 = new int[] {2, -2, 2, -2, 1, -1, 1, -1};
   }
 
 public String toString(){
@@ -43,7 +45,8 @@ public boolean solve(int row, int col){
   if (row < 0 || row >= board.length || col < 0 || col >= board[0].length){
     throw new IllegalArgumentException();
   }else {
-    return solveH(row, col, 1);
+    board[row][col] =1;
+    return solveH(row, col, 2);
   }
 }
 
@@ -71,8 +74,6 @@ public boolean solve(int row, int col){
 */
 
 private boolean canAdd(int row, int col, int level){
-  int tempr = row;
-  int tempc = col;
   if (row >= board.length || col >= board[0].length || row <0 || col<0 || board[row][col] != 0){
     return false;
   }
@@ -88,12 +89,12 @@ private boolean solveH(int row, int col, int level){
   if (row >= board.length || col >= board[0].length  || row <0 || col<0){
     return false;
   }
-  for (int x = 0; x < moves1.length; x++){
-    if (canAdd(row + moves1[x], col + moves2[x], level)){
-      if (solveH(row + moves1[x], col + moves2[x], level + 1)){
+  for (int i = 0; i < moves1.length; i++){
+    if (canAdd(row + moves1[i], col + moves2[i], level)){
+      if (solveH(row + moves1[i], col + moves2[i], level + 1)){
         return true;
       }
-      board[row + moves1[x]][col + moves1[x]] = 0;
+      board[row + moves1[i]][col + moves1[i]] = 0;
     }
 
 
