@@ -16,6 +16,13 @@ public class KnightBoard{
 
   }
 
+private void clear(){
+  for (int r =0; r<board.length;r++){
+    for (int c=0; c<board[0].length; c++){
+      board[r][c]=0;
+    }
+  }
+}
 public String toString(){
   String str = "";
   for (int r =0; r < board.length; r++){
@@ -87,9 +94,9 @@ private boolean solveH(int row, int col, int level){
     return false;
   }
 
-  public boolean countSolutions(int row, int col){
+  public int countSolutions(int row, int col){
     if (row >= board.length || col >= board[0].length  || row < 0 || col < 0){
-      return false;
+      throw new IllegalArgumentException();
     }
     for (int r =0; r < board.length; r++){
       for (int c =0; c < board[0].length; c++){
@@ -100,9 +107,25 @@ private boolean solveH(int row, int col, int level){
     return countHelper(row, col, 1);
   }
 
+  private int countHelper(int row, int col, int level){
+    int count = 0;
+    if (level > board.length*board[0].length){
+      return 1;
+    }
+    for (int i = 0; i < moves1.length; i++){
+        if (canAdd(row, col, level)){
+          count += countHelper(row + moves1[i], col + moves2[i], level+1);
+          removeKnight(row, col);
+        }
+  }
+  return count;
+}
+
 public static void main(String[] args) {
   KnightBoard test = new KnightBoard(3, 9);
   System.out.println(test.solve(0,0));
+  test.clear();
+  System.out.println(test.countSolutions(0,0));
   System.out.println(test);
 }
 }
