@@ -77,24 +77,24 @@ private boolean canAdd(int row, int col, int level){
   if (row >= board.length || col >= board[0].length || row <0 || col<0 || board[row][col] != 0){
     return false;
   }
-  else {board[row][col] = level;
+board[row][col] = level;
   return true;
-}
+
   }
 
-private boolean solveH(int row, int col, int level){
+private boolean solveH(int rows, int cols, int level){
   if (level > board.length * board[0].length ){
     return true;
   }
-  if (row >= board.length || col >= board[0].length  || row <0 || col<0){
+  if (rows >= board.length || cols >= board[0].length  || rows <0 || cols<0){
     return false;
   }
   for (int i = 0; i < moves1.length; i++){
-    if (canAdd(row + moves1[i], col + moves2[i], level)){
-      if (solveH(row + moves1[i], col + moves2[i], level + 1)){
+    if (canAdd(rows + moves1[i], cols + moves2[i], level)){
+      if (solveH(rows + moves1[i], cols + moves2[i], level + 1)){
         return true;
       }
-      board[row + moves1[i]][col + moves1[i]] = 0;
+      board[rows + moves1[i]][cols + moves1[i]] = 0;
     }
 
 
@@ -103,7 +103,7 @@ private boolean solveH(int row, int col, int level){
 }
 public static void main(String[] args) {
   KnightBoard test = new KnightBoard(5, 5);
-  System.out.println(test.solve(0,0));
+  System.out.println(test.solve(3, 3));
   System.out.println(test);
 }
 }
