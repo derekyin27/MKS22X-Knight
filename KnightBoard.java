@@ -2,6 +2,8 @@ public class KnightBoard{
   private int[][] board;
   private int[] moves1;
   private int[] moves2;
+  private int startRow;
+  private int startCol;
   public KnightBoard(int rows, int cols){
     if (rows <= 0 || cols <= 0)
     throw new IllegalArgumentException();
@@ -13,6 +15,8 @@ public class KnightBoard{
     }
     moves1 = new int[] {1, 1, -1, -1, 2, 2, -2, -2};
     moves2 = new int[] {2, -2, 2, -2, 1, -1, 1, -1};
+    startRow = rows;
+    startCol = cols;
   }
 
 public String toString(){
@@ -42,12 +46,11 @@ public boolean solve(int row, int col){
         throw new IllegalStateException();
     }
   }
-  if (row < 0 || row >= board.length || col < 0 || col >= board[0].length){
-    throw new IllegalArgumentException();
-  }else {
-    board[row][col] =1;
-    return solveH(row, col, 2);
-  }
+  if (row < 0 || col < 0 ||row >= board.length|| col >= board[0].length){
+      throw new IllegalArgumentException();
+    }
+    return solveH(row, col, 1);
+
 }
 
 /*private boolean solveH(int row, int col, int level){
@@ -77,32 +80,40 @@ private boolean canAdd(int row, int col, int level){
   if (row >= board.length || col >= board[0].length || row <0 || col<0 || board[row][col] != 0){
     return false;
   }
-  else {board[row][col] = level;
+   board[row][col] = level;
   return true;
-}
+
+  }
+
+  private boolean removeKnight(int row, int col){
+    if (row >= board.length || col >= board[0].length || row <0 || col<0 || board[row][col]== 0){
+      return false;
+    }
+board[row][col] = 0;
+return true;
   }
 
 private boolean solveH(int row, int col, int level){
+  if (row >= board.length || col >= board[0].length  || row < 0 || col < 0){
+    return false;
+  }
   if (level > board.length * board[0].length ){
     return true;
   }
-  if (row >= board.length || col >= board[0].length  || row <0 || col<0){
-    return false;
-  }
   for (int i = 0; i < moves1.length; i++){
-    if (canAdd(row + moves1[i], col + moves2[i], level)){
-      if (solveH(row + moves1[i], col + moves2[i], level + 1)){
+    if (canAdd(row, col, level)){
+      if (solveH(row + moves1[i], col + moves2[i], level +1)){
         return true;
       }
-      board[row + moves1[i]][col + moves1[i]] = 0;
+      else removeKnight(row, col);
     }
 
-
+    }
+    return false;
   }
-  return false;
-}
+
 public static void main(String[] args) {
-  KnightBoard test = new KnightBoard(5, 5);
+  KnightBoard test = new KnightBoard(3, 9);
   System.out.println(test.solve(0,0));
   System.out.println(test);
 }
