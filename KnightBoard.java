@@ -8,13 +8,21 @@ public class KnightBoard{
     board = new int[rows][cols];
     for (int r = 0; r < board.length; r++){
       for (int c =0; c < board[0].length; c++){
-        board[r][c] = 0;
+        board[r][c] = 0;// fills board
       }
     }
-    moves1 = new int[] {1, 1, -1, -1, 2, 2, -2, -2};
+    moves1 = new int[] {1, 1, -1, -1, 2, 2, -2, -2};// places all possible moves into integer arrays;
     moves2 = new int[] {2, -2, 2, -2, 1, -1, 1, -1};
+
   }
 
+private void clear(){
+  for (int r =0; r<board.length;r++){
+    for (int c=0; c<board[0].length; c++){
+      board[r][c]=0;
+    }
+  }
+}
 public String toString(){
   String str = "";
   for (int r =0; r < board.length; r++){
@@ -42,41 +50,19 @@ public boolean solve(int row, int col){
         throw new IllegalStateException();
     }
   }
-  if (row < 0 || row >= board.length || col < 0 || col >= board[0].length){
-    throw new IllegalArgumentException();
-  }else {
-    board[row][col] =1;
-    return solveH(row, col, 2);
-  }
+  if (row < 0 || col < 0 ||row >= board.length|| col >= board[0].length){
+      throw new IllegalArgumentException();
+    }
+    return solveH(row, col, 1);
+
 }
 
-/*private boolean solveH(int row, int col, int level){
-  if (level == board.length * board[0].length){
-    return true;
-  }
-  if (row >= board.length || col >= board[0].length || row <0 || col<0){
-    return false;
-  }
-  else if (board[row][col] == 0){
-    board[row][col] = level;
-    return solveH(row+1, col+2, level+1) ||
-    solveH(row+1, col-2, level+1) ||
-    solveH(row-1, col-2, level+1) ||
-    solveH(row-1, col+2, level+1) ||
-    solveH(row+2, col+1, level+1) ||
-    solveH(row+2, col-1, level+1) ||
-    solveH(row-2, col+1, level+1) ||
-    solveH(row-2, col-1, level+1);
-  }
-  return false;
-
-
-*/
 
 private boolean canAdd(int row, int col, int level){
   if (row >= board.length || col >= board[0].length || row <0 || col<0 || board[row][col] != 0){
-    return false;
+    return false;//checking conditions
   }
+<<<<<<< HEAD
 board[row][col] = level;
   return true;
 
@@ -95,15 +81,77 @@ private boolean solveH(int rows, int cols, int level){
         return true;
       }
       board[rows + moves1[i]][cols + moves1[i]] = 0;
-    }
-
+=======
+   board[row][col] = level;//if true then specified spot is assigned a number
+  return true;
 
   }
-  return false;
+
+  private boolean removeKnight(int row, int col){
+    if (row >= board.length || col >= board[0].length || row <0 || col<0 || board[row][col]== 0){
+      return false;
+    }
+board[row][col] = 0;//remove knight will help with backtracking to solve
+return true;
+  }
+
+private boolean solveH(int row, int col, int level){
+  if (row >= board.length || col >= board[0].length  || row < 0 || col < 0){
+    return false;
+  }
+  if (level > board.length * board[0].length ){
+    return true;
+  }
+  for (int i = 0; i < moves1.length; i++){
+    if (canAdd(row, col, level)){
+      if (solveH(row + moves1[i], col + moves2[i], level +1)){// run through all possible combinations of moves
+        return true;
+      }
+      else removeKnight(row, col);// if no possible moves, backtrack
+    }
+
+>>>>>>> 5fed0a1bf69ccc544e06404352a5c256eca56571
+    }
+    return false;
+  }
+
+  public int countSolutions(int row, int col){
+    if (row >= board.length || col >= board[0].length  || row < 0 || col < 0){
+      throw new IllegalArgumentException();
+    }
+    for (int r =0; r < board.length; r++){
+      for (int c =0; c < board[0].length; c++){
+        if (board[r][c] != 0)
+          throw new IllegalStateException();
+      }
+    }
+    return countHelper(row, col, 1);
+  }
+
+  private int countHelper(int row, int col, int level){
+    int count = 0;
+    if (level > board.length*board[0].length){
+      return 1;
+    }
+    for (int i = 0; i < moves1.length; i++){
+        if (canAdd(row, col, level)){
+          count += countHelper(row + moves1[i], col + moves2[i], level+1);
+          removeKnight(row, col);
+        }
+  }
+  return count;
 }
+
 public static void main(String[] args) {
+<<<<<<< HEAD
   KnightBoard test = new KnightBoard(5, 5);
   System.out.println(test.solve(3, 3));
+=======
+  KnightBoard test = new KnightBoard(3, 9);
+  System.out.println(test.solve(0,0));
+  test.clear();
+  System.out.println(test.countSolutions(0,0));
+>>>>>>> 5fed0a1bf69ccc544e06404352a5c256eca56571
   System.out.println(test);
 }
 }
