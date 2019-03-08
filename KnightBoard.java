@@ -62,26 +62,6 @@ private boolean canAdd(int row, int col, int level){
   if (row >= board.length || col >= board[0].length || row <0 || col<0 || board[row][col] != 0){
     return false;//checking conditions
   }
-<<<<<<< HEAD
-board[row][col] = level;
-  return true;
-
-  }
-
-private boolean solveH(int rows, int cols, int level){
-  if (level > board.length * board[0].length ){
-    return true;
-  }
-  if (rows >= board.length || cols >= board[0].length  || rows <0 || cols<0){
-    return false;
-  }
-  for (int i = 0; i < moves1.length; i++){
-    if (canAdd(rows + moves1[i], cols + moves2[i], level)){
-      if (solveH(rows + moves1[i], cols + moves2[i], level + 1)){
-        return true;
-      }
-      board[rows + moves1[i]][cols + moves1[i]] = 0;
-=======
    board[row][col] = level;//if true then specified spot is assigned a number
   return true;
 
@@ -110,7 +90,6 @@ private boolean solveH(int row, int col, int level){
       else removeKnight(row, col);// if no possible moves, backtrack
     }
 
->>>>>>> 5fed0a1bf69ccc544e06404352a5c256eca56571
     }
     return false;
   }
@@ -125,7 +104,7 @@ private boolean solveH(int row, int col, int level){
           throw new IllegalStateException();
       }
     }
-    return countHelper(row, col, 1);
+    return countHelper(row, col, 1) / 8;
   }
 
   private int countHelper(int row, int col, int level){
@@ -141,17 +120,34 @@ private boolean solveH(int row, int col, int level){
   }
   return count;
 }
+public static void runTest(int i){
+
+  KnightBoard b;
+  int[]m =   {4,5,5,5,5};
+  int[]n =   {4,5,4,5,5};
+  int[]startx = {0,0,0,1,2};
+  int[]starty = {0,0,0,1,2};
+  int[]answers = {0,304,32,56,64};
+  if(i >= 0 ){
+    try{
+      int correct = answers[i];
+      b = new KnightBoard(m[i%m.length],n[i%m.length]);
+
+      int ans  = b.countSolutions(startx[i],starty[i]);
+
+      if(correct==ans){
+        System.out.println("PASS board size: "+m[i%m.length]+"x"+n[i%m.length]+" "+ans);
+      }else{
+        System.out.println("FAIL board size: "+m[i%m.length]+"x"+n[i%m.length]+" "+ans+" vs "+correct);
+      }
+    }catch(Exception e){
+      System.out.println("FAIL Exception case: "+i);
+
+    }
+  }
+}
 
 public static void main(String[] args) {
-<<<<<<< HEAD
-  KnightBoard test = new KnightBoard(5, 5);
-  System.out.println(test.solve(3, 3));
-=======
-  KnightBoard test = new KnightBoard(3, 9);
-  System.out.println(test.solve(0,0));
-  test.clear();
-  System.out.println(test.countSolutions(0,0));
->>>>>>> 5fed0a1bf69ccc544e06404352a5c256eca56571
-  System.out.println(test);
+  runTest(1);
 }
 }
